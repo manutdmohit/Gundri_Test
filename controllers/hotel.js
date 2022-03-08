@@ -29,7 +29,9 @@ exports.getHotel = async (req, res) => {
   const hotel = await Hotel.findOne({ hotel_slug: req.params.slug });
 
   if (!hotel) {
-    throw new CustomError.NotFoundError(`No hotel found`);
+    throw new CustomError.NotFoundError(
+      `No hotel found with name ${req.params.slug}`
+    );
   }
 
   res.status(StatusCodes.OK).json({ hotel });
