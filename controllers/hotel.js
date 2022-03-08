@@ -1,11 +1,12 @@
-const res = require('express/lib/response');
 const { StatusCodes } = require('http-status-codes');
+
+const CustomError = require('../errors');
 
 const Hotel = require('../models/Hotel');
 
-// @desc Get All Hotels
-// @route GET /api/v1/hotels
-// @access Public
+// @desc Create Hotel
+// @route POST /api/v1/hotels
+// @access Private
 exports.createHotel = async (req, res) => {
   const hotel = await Hotel.create(req.body);
 
@@ -16,8 +17,9 @@ exports.createHotel = async (req, res) => {
 // @route GET /api/v1/hotels
 // @access Public
 exports.getHotels = async (req, res) => {
-  const hotel = await Hotel.find({}).limit(8).sort('-hotel_stars');
-  res.status(StatusCodes.OK).json({ count: hotel.length, hotel });
+  const hotels = await Hotel.find({}).limit(8).sort('-hotel_stars');
+
+  res.status(StatusCodes.OK).json({ count: hotels.length, hotel });
 };
 
 // @desc Get Single Hotel
@@ -25,6 +27,10 @@ exports.getHotels = async (req, res) => {
 // @access public
 exports.getHotel = async (req, res) => {
   const hotel = await Hotel.findOne({ hotel_slug: req.params.slug });
+
+  if (!hotel) {
+    throw new CustomError.NotFoundError(`No hotel found`);
+  }
 
   res.status(StatusCodes.OK).json({ hotel });
 };
