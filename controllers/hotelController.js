@@ -10,7 +10,7 @@ const Hotel = require('../models/Hotel');
 exports.createHotel = async (req, res) => {
   const hotel = await Hotel.create(req.body);
 
-  res.status(StatusCodes.OK).json({ hotel });
+  res.status(StatusCodes.CREATED).json({ hotel });
 };
 
 // @desc Get All Hotels

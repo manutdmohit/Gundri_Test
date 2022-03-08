@@ -10,7 +10,7 @@ const connectDB = require('./db/connect');
 const app = express();
 
 // Routes
-const hotel = require('./routes/hotel');
+const hotelRoutes = require('./routes/hotelRoutes');
 
 // Middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -30,7 +30,7 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 
 // Mount the routers
-app.use('/api/v1/hotels', hotel);
+app.use('/api/v1/hotels', hotelRoutes);
 
 // Middlewares
 app.use(notFoundMiddleware);
