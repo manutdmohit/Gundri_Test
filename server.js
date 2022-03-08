@@ -30,7 +30,7 @@ const port = process.env.PORT || 8000;
 app.use(express.json());
 
 // Mount the routers
-app.use('/api/v1', hotel);
+app.use('/api/v1/hotels', hotel);
 
 // Middlewares
 app.use(notFoundMiddleware);
