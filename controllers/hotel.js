@@ -19,7 +19,7 @@ exports.createHotel = async (req, res) => {
 exports.getHotels = async (req, res) => {
   const hotels = await Hotel.find({}).limit(8).sort('-hotel_stars');
 
-  res.status(StatusCodes.OK).json({ count: hotels.length, hotel });
+  res.status(StatusCodes.OK).json({ count: hotels.length, hotels });
 };
 
 // @desc Get Single Hotel
