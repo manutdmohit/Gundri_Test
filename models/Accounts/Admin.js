@@ -6,44 +6,50 @@ const AdminSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: [true, 'Please provide name'],
+      required: [true, 'Please provide First Name'],
       minlength: 3,
       maxlength: 50,
     },
     lastName: {
       type: String,
-      required: [true, 'Please provide name'],
+      required: [true, 'Please provide Last Name'],
       minlength: 3,
       maxlength: 50,
     },
     email: {
       type: String,
       unique: true,
-      required: [true, 'Please provide email'],
+      required: [true, 'Please provide Email'],
       validate: {
         validator: validator.isEmail,
-        message: 'Please provide valid email',
+        message: 'Please provide valid Email',
       },
     },
     password: {
       type: String,
-      required: [true, 'Please provide password'],
+      required: [true, 'Please provide Password'],
       minlength: 6,
     },
-    mobile: {
+    mobileNumber: {
       type: String,
-      validate: {
-        validator: function (v) {
-          return /\d{3}-\d{3}-\d{4}/.test(v);
-        },
-        message: (props) => `${props.value} is not a valid phone number!`,
-      },
-      required: [true, 'Please provide phone number'],
+      minlength: 10,
     },
     country: {
       type: 'String',
-      required: [true, 'Please provide country name'],
+      required: [true, 'Please provide Country Name'],
     },
+    address1: {
+      type: String,
+      default: '',
+    },
+    address2: {
+      type: String,
+      default: '',
+    },
+    // role: {
+    //   type: String,
+    //   enum: ['admin', 'partner', 'customer', 'guestCustomer'],
+    // },
   },
   {
     timestamps: true,

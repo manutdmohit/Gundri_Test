@@ -11,6 +11,7 @@ const app = express();
 
 // Routes
 const hotelRoutes = require('./routes/hotelRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -31,6 +32,7 @@ app.use(express.json());
 
 // Mount the routers
 app.use('/api/v1/hotels', hotelRoutes);
+app.use('/api/v1/admins', adminRoutes);
 
 // Middlewares
 app.use(notFoundMiddleware);
