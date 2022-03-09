@@ -4,7 +4,7 @@ const router = express.Router();
 
 const {
   createGuestCustomer,
-} = require('../controllers/accounts/createGuestCustomer');
+} = require('../controllers/accounts/guestcustomerController');
 
 router.route('/').post(createGuestCustomer);
 

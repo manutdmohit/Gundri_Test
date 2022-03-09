@@ -2,7 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 
-const { createCustomer } = require('../controllers/accounts/createCustomer');
+const {
+  createCustomer,
+} = require('../controllers/accounts/customerController');
 
 router.route('/').post(createCustomer);
 
