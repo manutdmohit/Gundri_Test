@@ -17,11 +17,16 @@ const partnerRoutes = require('./routes/partnerRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const guestCustomerRoutes = require('./routes/guestCustomerRoutes');
 
+// Stay Routes
 const stayRoutes = require('./routes/StayRoutes/stayRoute');
+
+// Room Routes
+const roomRoutes = require('./routes/StayRoutes/roomRoute');
 
 // Middleware
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
+
 // Enable CORS
 app.use(cors());
 
@@ -46,6 +51,9 @@ app.use('/api/v1/guestcustomers', guestCustomerRoutes);
 
 // Stay Routes
 app.use('/api/v1/stays', stayRoutes);
+
+// Room Routes
+app.use('/api/v1/rooms', roomRoutes);
 
 // Middlewares
 app.use(notFoundMiddleware);
