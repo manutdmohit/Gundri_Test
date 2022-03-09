@@ -6,7 +6,7 @@ const Stay = require('../../models/Stays/Stay');
 
 // @desc Create Customer
 // @route POST /api/v1/customers
-// @access Public
+// @access Private
 exports.createStay = async (req, res) => {
   const stay = await Stay.create(req.body);
 
