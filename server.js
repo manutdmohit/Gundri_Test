@@ -12,6 +12,9 @@ const app = express();
 // Routes
 const hotelRoutes = require('./routes/hotelRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const partnerRoutes = require('./routes/partnerRoutes');
+const customerRoutes = require('./routes/customerRoutes');
+const guestCustomerRoutes = require('./routes/guestCustomerRoutes');
 
 // Middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -33,6 +36,9 @@ app.use(express.json());
 // Mount the routers
 app.use('/api/v1/hotels', hotelRoutes);
 app.use('/api/v1/admins', adminRoutes);
+app.use('/api/v1/partners', partnerRoutes);
+app.use('/api/v1/customers', customerRoutes);
+app.use('/api/v1/guestcustomers', guestCustomerRoutes);
 
 // Middlewares
 app.use(notFoundMiddleware);
