@@ -11,15 +11,17 @@ const app = express();
 
 // Routes
 const hotelRoutes = require('./routes/hotelRoutes');
+
 const adminRoutes = require('./routes/adminRoutes');
 const partnerRoutes = require('./routes/partnerRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const guestCustomerRoutes = require('./routes/guestCustomerRoutes');
 
+const stayRoutes = require('./routes/StayRoutes/stayRoute');
+
 // Middleware
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
-
 // Enable CORS
 app.use(cors());
 
@@ -35,10 +37,15 @@ app.use(express.json());
 
 // Mount the routers
 app.use('/api/v1/hotels', hotelRoutes);
+
+//Account Routes
 app.use('/api/v1/admins', adminRoutes);
 app.use('/api/v1/partners', partnerRoutes);
 app.use('/api/v1/customers', customerRoutes);
 app.use('/api/v1/guestcustomers', guestCustomerRoutes);
+
+// Stay Routes
+app.use('/api/v1/stays', stayRoutes);
 
 // Middlewares
 app.use(notFoundMiddleware);
