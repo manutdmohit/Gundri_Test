@@ -2,13 +2,22 @@ const { StatusCodes } = require('http-status-codes');
 
 const CustomError = require('../../errors');
 
-const Admin = require('../../models/Accounts/Admin');
-// const Admin = require('../../models/Accounts/Admin');
-
 // @desc Create Admin
 // @route POST /api/v1/admins
 // @access Private
+const Admin = require('../../models/Accounts/Admin');
+
 exports.createAdmin = async (req, res) => {
+  const { email } = req.body;
+
+  // Check whether the email is already present in the database or not
+  const checkEmail = await Admin.findOne({ email });
+  if (checkEmail) {
+    throw new CustomError.BadRequestError(
+      'Email already exists. Try with another email.'
+    );
+  }
+
   const admin = await Admin.create(req.body);
 
   res.status(StatusCodes.CREATED).json({

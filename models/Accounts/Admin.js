@@ -46,10 +46,11 @@ const AdminSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
-    // role: {
-    //   type: String,
-    //   enum: ['admin', 'partner', 'customer', 'guestCustomer'],
-    // },
+    role: {
+      type: String,
+      enum: ['admin'],
+      default: 'admin',
+    },
   },
   {
     timestamps: true,
