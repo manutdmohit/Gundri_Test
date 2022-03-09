@@ -8,8 +8,6 @@ const Stay = require('../../models/Stays/Stay');
 // @route POST /api/v1/customers
 // @access Public
 exports.createStay = async (req, res) => {
-  const { email } = req.body;
-
   const stay = await Stay.create(req.body);
 
   res.status(StatusCodes.CREATED).json({
