@@ -1,9 +1,11 @@
 require('dotenv').config();
 require('express-async-errors');
 
+// Packages
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const connectDB = require('./db/connect');
 
@@ -27,8 +29,8 @@ const roomRoutes = require('./routes/StayRoutes/roomRoute');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
-// Enable CORS
-app.use(cors());
+// // Enable CORS
+// app.use(cors());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
@@ -37,8 +39,11 @@ if (process.env.NODE_ENV === 'development') {
 
 const port = process.env.PORT || 8000;
 
-//Body Parser
+// Body Parser
 app.use(express.json());
+
+// Parsing the signed cookie
+app.use(cookieParser(process.env.JWT_SECRET));
 
 // Mount the routers
 app.use('/api/v1/hotels', hotelRoutes);

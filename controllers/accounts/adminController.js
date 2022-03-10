@@ -1,17 +1,28 @@
 const { StatusCodes } = require('http-status-codes');
 
+const { createTokenUser, attachCookiesToResponse } = require('../../utils');
+
 const CustomError = require('../../errors');
+
+const Admin = require('../../models/Accounts/Admin');
+const Customer = require('../../models/Accounts/Customer');
+const GuestCustomer = require('../../models/Accounts/GuestCustomer');
+const Partner = require('../../models/Accounts/Partner');
+
+const { createGuestCustomer } = require('./guestcustomerController');
 
 // @desc Create Admin
 // @route POST /api/v1/admins
 // @access Private
-const Admin = require('../../models/Accounts/Admin');
-
 exports.createAdmin = async (req, res) => {
   const { email } = req.body;
 
-  // Check whether the email is already present in the database or not
-  const checkEmail = await Admin.findOne({ email });
+  const checkEmail =
+    (await Customer.findOne({ email })) ||
+    (await Admin.findOne({ email })) ||
+    (await GuestCustomer.findOne({ email })) ||
+    (await Partner.findOne({ email }));
+
   if (checkEmail) {
     throw new CustomError.BadRequestError(
       'Email already exists. Try with another email.'
@@ -20,13 +31,10 @@ exports.createAdmin = async (req, res) => {
 
   const admin = await Admin.create(req.body);
 
-  res.status(StatusCodes.CREATED).json({
-    firstName: admin.firstName,
-    lastName: admin.lastName,
-    email: admin.lastName,
-    country: admin.country,
-    mobileNumber: admin.mobileNumber,
-    address1: admin.address1,
-    address2: admin.address2,
-  });
+  // Generating Token
+  const tokenUser = createTokenUser(admin);
+
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };

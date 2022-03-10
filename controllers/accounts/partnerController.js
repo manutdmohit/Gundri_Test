@@ -2,7 +2,12 @@ const { StatusCodes } = require('http-status-codes');
 
 const CustomError = require('../../errors');
 
+const Admin = require('../../models/Accounts/Admin');
+const Customer = require('../../models/Accounts/Customer');
+const GuestCustomer = require('../../models/Accounts/GuestCustomer');
 const Partner = require('../../models/Accounts/Partner');
+
+const { createTokenUser, attachCookiesToResponse } = require('../../utils');
 
 // @desc Create Partner
 // @route POST /api/v1/partners
@@ -10,8 +15,12 @@ const Partner = require('../../models/Accounts/Partner');
 exports.createPartner = async (req, res) => {
   const { email } = req.body;
 
-  // Check whether the email is already present in the database or not
-  const checkEmail = await Partner.findOne({ email });
+  const checkEmail =
+    (await Customer.findOne({ email })) ||
+    (await Admin.findOne({ email })) ||
+    (await GuestCustomer.findOne({ email })) ||
+    (await Partner.findOne({ email }));
+
   if (checkEmail) {
     throw new CustomError.BadRequestError(
       'Email already exists. Try with another email.'
@@ -20,15 +29,10 @@ exports.createPartner = async (req, res) => {
 
   const partner = await Partner.create(req.body);
 
-  res.status(StatusCodes.CREATED).json({
-    firstName: partner.firstName,
-    lastName: partner.lastName,
-    email: partner.lastName,
-    country: partner.country,
-    mobileNumber: partner.mobileNumber,
-    address1: partner.address1,
-    address2: partner.address2,
-    assignHotels: partner.assignHotels,
-    assignRentals: partner.assignRentals,
-  });
+  // Generating Token
+  const tokenUser = createTokenUser(partner);
+
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
