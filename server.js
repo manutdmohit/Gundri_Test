@@ -12,12 +12,17 @@ const connectDB = require('./db/connect');
 const app = express();
 
 // Routes
+const authRouter = require('./routes/authRoutes');
+
 const hotelRoutes = require('./routes/hotelRoutes');
 
 const adminRoutes = require('./routes/adminRoutes');
 const partnerRoutes = require('./routes/partnerRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const guestCustomerRoutes = require('./routes/guestCustomerRoutes');
+
+// User Routes
+const userRoutes = require('./routes/UserRoutes/user');
 
 // Stay Routes
 const stayRoutes = require('./routes/StayRoutes/stayRoute');
@@ -45,14 +50,31 @@ app.use(express.json());
 // Parsing the signed cookie
 app.use(cookieParser(process.env.JWT_SECRET));
 
+app.get('/', (req, res) => {
+  res.send('Hello, Ecommerce');
+});
+
+app.get('/api/v1', (req, res) => {
+  // accessing cookie
+
+  // accessing signed cookie
+  console.log(req.signedCookies);
+  res.send('Hello, Gundri');
+});
+
 // Mount the routers
+app.use('/api/v1/auth', authRouter);
+
 app.use('/api/v1/hotels', hotelRoutes);
 
-//Account Routes
+// Account Routes
 app.use('/api/v1/admins', adminRoutes);
 app.use('/api/v1/partners', partnerRoutes);
 app.use('/api/v1/customers', customerRoutes);
 app.use('/api/v1/guestcustomers', guestCustomerRoutes);
+
+// User Routes
+app.use('/api/v1', userRoutes);
 
 // Stay Routes
 app.use('/api/v1/stays', stayRoutes);
