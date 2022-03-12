@@ -15,6 +15,10 @@ const register = async (req, res) => {
     );
   }
 
+  if (!password) {
+    throw new CustomError.BadRequestError('Please Provide password');
+  }
+
   // first registered user is an admin
   const isFirstAccount = (await User.countDocuments({})) === 0;
   const role = isFirstAccount ? 'admin' : 'customer';
@@ -72,4 +76,98 @@ const logout = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
 
-module.exports = { register, login, logout };
+const registerGuest = async (req, res) => {
+  const role = 'guest';
+
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    mobileNumber,
+    address,
+    country,
+  } = req.body;
+
+  // Check whether the email is already present in the database or not
+  const checkEmail = await User.findOne({ email });
+  if (checkEmail) {
+    throw new CustomError.BadRequestError(
+      'Email already exists. Try with another email.'
+    );
+  }
+
+  if (!password) {
+    throw new CustomError.BadRequestError('Please provide password');
+  }
+
+  if (!address || !country) {
+    throw new CustomError.BadRequestError('Please provide all values');
+  }
+
+  const user = await User.create({
+    firstName,
+    lastName,
+    mobileNumber,
+    email,
+    password,
+    role,
+    country,
+    address,
+  });
+
+  // Generating Token
+  const tokenUser = createTokenUser(user);
+
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.status(StatusCodes.CREATED).json({ user: tokenUser });
+};
+
+const registerPartner = async (req, res) => {
+  const role = 'partner';
+
+  const {
+    firstName,
+    lastName,
+    email,
+    mobileNumber,
+    city,
+    state,
+    address1,
+    address2,
+    country,
+  } = req.body;
+
+  // Check whether the email is already present in the database or not
+  const checkEmail = await User.findOne({ email });
+  if (checkEmail) {
+    throw new CustomError.BadRequestError(
+      'Email already exists. Try with another email.'
+    );
+  }
+
+  if (!address1 || !city || !state || !country) {
+    throw new CustomError.BadRequestError('Please enter all values');
+  }
+
+  const user = await User.create({
+    firstName,
+    lastName,
+    mobileNumber,
+    email,
+    role,
+    country,
+    address1,
+    address2,
+  });
+
+  // Generating Token
+  const tokenUser = createTokenUser(user);
+
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.status(StatusCodes.CREATED).json({ user: tokenUser });
+};
+
+module.exports = { register, login, logout, registerGuest, registerPartner };
