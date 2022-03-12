@@ -2,8 +2,14 @@ const express = require('express');
 
 const router = express.Router();
 
-const { createAdmin } = require('../controllers/accounts/adminController');
+const {
+  createAdmin,
+  loginAdmin,
+  logoutAdmin,
+} = require('../controllers/accounts/adminController');
 
-router.post('/', createAdmin);
+router.post('/register', createAdmin);
+router.post('/login', loginAdmin);
+router.post('/logout', logoutAdmin);
 
 module.exports = router;
