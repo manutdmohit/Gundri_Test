@@ -17,10 +17,6 @@ const {
 } = require('../../controllers/users/userController');
 
 const {
-  showCurrentLoggedInUser,
-} = require('../../controllers/getCurrentLoggedInUser');
-
-const {
   authenticateUser,
   authorizePermissions,
 } = require('../../middleware/authentication');
@@ -28,8 +24,6 @@ const {
 router.route('/customers').get(authenticateUser, getAllCustomers);
 router.route('/guests').get(authenticateUser, getAllGuestCustomers);
 router.route('/partners').get(authenticateUser, getAllPartners);
-
-router.route('/showMe').get(authenticateUser, showCurrentLoggedInUser);
 
 router
   .route('/customers/updatecustomerpassword')
