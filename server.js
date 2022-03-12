@@ -13,6 +13,7 @@ const app = express();
 
 // Routes
 const authRouter = require('./routes/authRoutes');
+const userRouter = require('./routes/userRoutes');
 
 const hotelRoutes = require('./routes/hotelRoutes');
 
@@ -64,6 +65,7 @@ app.get('/api/v1', (req, res) => {
 
 // Mount the routers
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
 
 app.use('/api/v1/hotels', hotelRoutes);
 
