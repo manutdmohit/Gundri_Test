@@ -84,7 +84,7 @@ const staySchema = new mongoose.Schema(
     payment_opt: {
       type: String,
       enum: ['Pay on Arrival', 'Pay on Later'],
-      default: '',
+      default: 'Pay on Arrival',
     },
     adults: {
       type: Number,
