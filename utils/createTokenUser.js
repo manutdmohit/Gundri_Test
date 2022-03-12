@@ -1,5 +1,5 @@
 const createTokenUser = (user) => {
-  if (user.address && user.country) {
+  if (user.role === 'guest') {
     return {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -10,13 +10,8 @@ const createTokenUser = (user) => {
       address: user.address,
       country: user.country,
     };
-  } else if (
-    user.address1 &&
-    user.address2 &&
-    user.state &&
-    user.city &&
-    user.country
-  ) {
+  }
+  if (user.role === 'partner') {
     return {
       firstName: user.firstName,
       lastName: user.lastName,
