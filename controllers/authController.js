@@ -160,6 +160,8 @@ const registerPartner = async (req, res) => {
     country,
     address1,
     address2,
+    state,
+    city,
   });
 
   // Generating Token
