@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const { hashPassword } = require('../../utils');
-// const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 const customerSchema = new mongoose.Schema(
   {
@@ -60,5 +60,11 @@ const customerSchema = new mongoose.Schema(
 
 // Hashing Password
 hashPassword(customerSchema);
+
+// Comparing Password
+customerSchema.methods.comparePassword = async function (enteredPassword) {
+  const isMatch = await bcrypt.compare(enteredPassword, this.password);
+  return isMatch;
+};
 
 module.exports = mongoose.model('Customer', customerSchema);
