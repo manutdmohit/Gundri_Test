@@ -32,8 +32,25 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please provide password'],
       minlength: 6,
+    },
+    address: {
+      type: String,
+    },
+    address1: {
+      type: String,
+    },
+    address2: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    state: {
+      type: String,
+    },
+    country: {
+      type: String,
     },
     role: {
       type: String,
