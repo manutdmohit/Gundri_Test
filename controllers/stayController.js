@@ -8,6 +8,16 @@ const Stay = require('../models/Stay');
 // @route POST /api/v1/hotels/create
 // @access Private
 exports.createStay = async (req, res) => {
+  const { name } = req.body;
+
+  const checkName = await Stay.findOne({ name });
+
+  if (checkName) {
+    throw new CustomError.BadRequestError(
+      'Hotel already exists. Try to create another hotel.'
+    );
+  }
+
   const stay = await Stay.create(req.body);
 
   res.status(StatusCodes.CREATED).json({
