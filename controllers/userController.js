@@ -90,7 +90,8 @@ exports.updateUser = async (req, res) => {
 
 // Update partner with findOne and save
 exports.updatePartner = async (req, res) => {
-  const { firstName, lastName, mobileNumber, email, password } = req.body;
+  const { firstName, lastName, mobileNumber, email, password, verified } =
+    req.body;
 
   if (!firstName || !lastName || !mobileNumber || !email) {
     1;
@@ -105,8 +106,9 @@ exports.updatePartner = async (req, res) => {
   user.lastName = lastName;
   user.mobileNumber = mobileNumber;
   user.email = email;
+  user.verified = verified;
 
-  user.password = await bcrypt.hash(password, 10);
+  user.password = password;
 
   await user.save();
 
