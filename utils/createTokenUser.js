@@ -13,6 +13,7 @@ const createTokenUser = (user) => {
   }
   if (user.role === 'partner') {
     return {
+      centralName: user.centralName,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,

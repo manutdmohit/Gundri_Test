@@ -52,6 +52,9 @@ const UserSchema = new mongoose.Schema(
     country: {
       type: String,
     },
+    centralName: {
+      type: String,
+    },
     role: {
       type: String,
       enum: ['admin', 'customer', 'guest', 'partner'],

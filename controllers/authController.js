@@ -137,6 +137,7 @@ const registerPartner = async (req, res) => {
     address1,
     address2,
     country,
+    centralName,
   } = req.body;
 
   // Check whether the email is already present in the database or not
@@ -147,7 +148,7 @@ const registerPartner = async (req, res) => {
     );
   }
 
-  if (!address1 || !city || !state || !country) {
+  if (!address1 || !city || !state || !country || !centralName) {
     throw new CustomError.BadRequestError('Please enter all values');
   }
 
@@ -162,6 +163,7 @@ const registerPartner = async (req, res) => {
     address2,
     state,
     city,
+    centralName,
   });
 
   // Generating Token
