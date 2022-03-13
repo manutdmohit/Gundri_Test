@@ -37,11 +37,13 @@ router
 
 router.route('/showme').get(authenticateUser, showCurrentLoggedInUser);
 
-router.route('/updateuserpassword').patch(authenticateUser, updateUserPassword);
-
 router.route('/updateuser/:id').patch(authenticateUser, updateUser);
 
 router.route('/updatepartner/:id').patch(authenticateUser, updatePartner);
+
+router
+  .route('/updateuserpassword/:id')
+  .patch(authenticateUser, updateUserPassword);
 
 router.route('/:id').get(authenticateUser, getSingleUser);
 

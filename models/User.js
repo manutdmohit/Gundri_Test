@@ -30,6 +30,10 @@ const UserSchema = new mongoose.Schema(
         message: 'Please provide valid email',
       },
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     password: {
       type: String,
       minlength: 6,
