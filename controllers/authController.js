@@ -1,7 +1,9 @@
 const { StatusCodes } = require('http-status-codes');
 
 const User = require('../models/User');
+const Partner = require('../models/Accounts/Partner');
 const CustomError = require('../errors');
+
 const { attachCookiesToResponse, createTokenUser } = require('../utils');
 
 const register = async (req, res) => {
@@ -48,6 +50,33 @@ const login = async (req, res) => {
   }
 
   const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new CustomError.UnauthenticatedError('Invalid Credentials');
+  }
+
+  const isPasswordCorrect = await user.comparePassword(password);
+
+  if (!isPasswordCorrect) {
+    throw new CustomError.UnauthenticatedError('Invalid Credentials');
+  }
+
+  // Generating Token
+  const tokenUser = createTokenUser(user);
+
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.status(StatusCodes.OK).json({ user: tokenUser });
+};
+
+const loginPartner = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw new CustomError.BadRequestError('Please provide email and password');
+  }
+
+  const user = await Partner.findOne({ email });
 
   if (!user) {
     throw new CustomError.UnauthenticatedError('Invalid Credentials');
@@ -174,4 +203,11 @@ const registerPartner = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 
-module.exports = { register, login, logout, registerGuest, registerPartner };
+module.exports = {
+  register,
+  login,
+  loginPartner,
+  logout,
+  registerGuest,
+  registerPartner,
+};
