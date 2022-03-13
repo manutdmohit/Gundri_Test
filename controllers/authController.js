@@ -148,7 +148,7 @@ const registerPartner = async (req, res) => {
     );
   }
 
-  if (!address1 || !city || !state || !country || !centralName) {
+  if (!address1 || !address2 || !city || !state || !country || !centralName) {
     throw new CustomError.BadRequestError('Please enter all values');
   }
 
