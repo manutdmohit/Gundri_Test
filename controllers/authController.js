@@ -18,7 +18,7 @@ const register = async (req, res) => {
   }
 
   if (!password) {
-    throw new CustomError.BadRequestError('Please Provide password');
+    throw new CustomError.BadRequestError('Please provide password');
   }
 
   // first registered user is an admin
