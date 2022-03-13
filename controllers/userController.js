@@ -1,4 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
+const bcrypt = require('bcryptjs');
 
 const User = require('../models/User');
 const CustomError = require('../errors');
@@ -66,7 +67,7 @@ exports.updateUser = async (req, res) => {
 
   if (!firstName || !lastName || !mobileNumber || !email) {
     1;
-    throw new CustomError.NotFoundError('Please provide all values');
+    throw new CustomError.BadRequestError('Please provide all values');
   }
 
   const user = await User.findById(req.params.id);
@@ -77,6 +78,35 @@ exports.updateUser = async (req, res) => {
   user.lastName = lastName;
   user.mobileNumber = mobileNumber;
   user.email = email;
+
+  await user.save();
+
+  const tokenUser = createTokenUser(user);
+
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.status(StatusCodes.OK).json({ user: tokenUser });
+};
+
+// Update partner with findOne and save
+exports.updatePartner = async (req, res) => {
+  const { firstName, lastName, mobileNumber, email, password } = req.body;
+
+  if (!firstName || !lastName || !mobileNumber || !email) {
+    1;
+    throw new CustomError.BadRequestError('Please provide all values');
+  }
+
+  const user = await User.findById(req.params.id);
+
+  checkPermissions(req.user, user._id);
+
+  user.firstName = firstName;
+  user.lastName = lastName;
+  user.mobileNumber = mobileNumber;
+  user.email = email;
+
+  user.password = await bcrypt.hash(password, 10);
 
   await user.save();
 
