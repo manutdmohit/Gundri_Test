@@ -57,7 +57,10 @@ const staySchema = new mongoose.Schema(
       },
       default: 'Home Stay',
     },
-
+    location: {
+      type: String,
+      required: [true, 'Please provide location'],
+    },
     map_city: {
       type: String,
     },
