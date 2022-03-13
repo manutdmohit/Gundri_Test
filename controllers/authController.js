@@ -76,9 +76,9 @@ const loginPartner = async (req, res) => {
     throw new CustomError.BadRequestError('Please provide email and password');
   }
 
-  const user = await Partner.findOne({ email });
+  const user = await User.findOne({ email });
 
-  if (!user) {
+  if (!user || !user.verified) {
     throw new CustomError.UnauthenticatedError('Invalid Credentials');
   }
 
@@ -155,6 +155,7 @@ const registerGuest = async (req, res) => {
 
 const registerPartner = async (req, res) => {
   const role = 'partner';
+  const verified = 'false';
 
   const {
     firstName,
@@ -187,6 +188,7 @@ const registerPartner = async (req, res) => {
     mobileNumber,
     email,
     role,
+    verified,
     country,
     address1,
     address2,
