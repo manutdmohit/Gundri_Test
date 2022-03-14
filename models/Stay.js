@@ -7,6 +7,11 @@ const staySchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide name of the hotel'],
     },
+    createdBy: {
+      type: mongoose.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     slug: {
       type: String,
     },
@@ -164,7 +169,7 @@ const staySchema = new mongoose.Schema(
 
 // Create hotle slug from the name
 staySchema.pre('save', function (next) {
-  this.slug = slugify(this.name, '-', { lower: true });
+  this.slug = slugify(this.name, { lower: true });
   next();
 });
 
