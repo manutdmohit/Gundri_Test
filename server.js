@@ -66,7 +66,7 @@ app.get('/api/v1', (req, res) => {
 // Mount the routers
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/hotels', stayRoutes);
+app.use('/api/v1/stays', stayRoutes);
 
 app.use('/api/v1/hotels', hotelRoutes);
 
