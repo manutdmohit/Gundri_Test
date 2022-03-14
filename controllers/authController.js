@@ -78,8 +78,14 @@ const loginPartner = async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (!user || !user.verified) {
-    throw new CustomError.UnauthenticatedError('Invalid Credentials');
+  if (!user) {
+    throw new CustomError.BadRequestError('Invalid Credentials');
+  }
+
+  if (!user.verified) {
+    throw new CustomError.UnauthenticatedError(
+      'Unauthorized to access this route'
+    );
   }
 
   const isPasswordCorrect = await user.comparePassword(password);
