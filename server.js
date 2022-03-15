@@ -21,15 +21,15 @@ const adminRoutes = require('./routes/adminRoutes');
 const partnerRoutes = require('./routes/partnerRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const guestCustomerRoutes = require('./routes/guestCustomerRoutes');
+const stayRoutes = require('./routes/stayRoutes');
+const roomRoutes = require('./routes/roomRoutes');
 
 // User Routes
 const userRoutes = require('./routes/UserRoutes/user');
 
 // Stay Routes
-const stayRoutes = require('./routes/stayRoutes');
 
 // Room Routes
-const roomRoutes = require('./routes/StayRoutes/roomRoute');
 
 // Middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -67,6 +67,7 @@ app.get('/api/v1', (req, res) => {
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/stays', stayRoutes);
+app.use('/api/v1/rooms', roomRoutes);
 
 app.use('/api/v1/hotels', hotelRoutes);
 
