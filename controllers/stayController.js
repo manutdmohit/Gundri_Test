@@ -31,7 +31,10 @@ exports.createStay = async (req, res) => {
 // @route GET /api/v1/hotels
 // @access Public
 exports.getStays = async (req, res) => {
-  const stays = await Stay.find({});
+  const stays = await Stay.find({}).populate({
+    path: 'createdBy',
+    select: 'firstName lastName',
+  });
 
   res.status(StatusCodes.OK).json({
     count: stays.length,
