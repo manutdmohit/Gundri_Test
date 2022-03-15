@@ -167,7 +167,7 @@ const staySchema = new mongoose.Schema(
   }
 );
 
-// Create hotle slug from the name
+// Create hotel slug from the name
 staySchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();

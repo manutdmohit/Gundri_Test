@@ -12,7 +12,10 @@ const {
 // @route /api/users
 // @access Private and Admin Only
 exports.getAllUsers = async (req, res) => {
-  const users = await User.find({}).populate('stays').select('-password');
+  const users = await User.find({})
+    .populate('stays')
+    .populate('rooms')
+    .select('-password');
 
   res.status(StatusCodes.OK).json({ count: users.length, users });
 };

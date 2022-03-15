@@ -10,12 +10,8 @@ const roomSchema = new mongoose.Schema(
       type: [String],
     },
     status: {
-      type: String,
-      enum: {
-        values: ['Yes', 'NO'],
-        message: '{VALUE} is not supported',
-      },
-      default: 'Yes',
+      type: Boolean,
+      default: false,
     },
     price: {
       type: Number,
@@ -105,11 +101,10 @@ const roomSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    // stay: {
-    //   type: mongoose.Types.ObjectId,
-    //   ref: 'Stay',
-    //   required: true,
-    // },
+    stay: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Stay',
+    },
     quantity: {
       type: Number,
       default: 1,
