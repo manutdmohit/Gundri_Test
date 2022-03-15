@@ -161,7 +161,7 @@ const registerGuest = async (req, res) => {
 
 const registerPartner = async (req, res) => {
   const role = 'partner';
-  const verified = 'false';
+  const verified = false;
 
   const {
     firstName,
