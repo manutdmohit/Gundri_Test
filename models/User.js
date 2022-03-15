@@ -104,4 +104,12 @@ UserSchema.virtual('stays', {
   justOne: false,
 });
 
+// Reverse populate with virtuals
+UserSchema.virtual('rooms', {
+  ref: 'Room',
+  localField: '_id',
+  foreignField: 'createdBy',
+  justOne: false,
+});
+
 module.exports = mongoose.model('User', UserSchema);
