@@ -10,6 +10,7 @@ const {
   updateUser,
   updateUserPassword,
   updatePartner,
+  deleteUser,
 } = require('../controllers/userController');
 
 const {
@@ -44,6 +45,10 @@ router.route('/updatepartner/:id').patch(authenticateUser, updatePartner);
 router
   .route('/updateuserpassword/:id')
   .patch(authenticateUser, updateUserPassword);
+
+router
+  .route('/delete/:id')
+  .delete(authenticateUser, authorizePermissions('admin'), deleteUser);
 
 router.route('/:id').get(authenticateUser, getSingleUser);
 
