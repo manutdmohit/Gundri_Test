@@ -32,7 +32,6 @@ const UserSchema = new mongoose.Schema(
     },
     verified: {
       type: Boolean,
-      default: false,
     },
     password: {
       type: String,
@@ -65,6 +64,10 @@ const UserSchema = new mongoose.Schema(
     },
   },
   {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
+  {
     timestamps: true,
   }
 );
@@ -85,5 +88,20 @@ UserSchema.methods.comparePassword = async function (enteredPassword) {
   const isMatch = await bcrypt.compare(enteredPassword, this.password);
   return isMatch;
 };
+
+// Cascade delete stays when a user is deleted
+UserSchema.pre('remove', async function (next) {
+  await this.model('Stay').deleteMany({ createdBy: this._id });
+
+  next();
+});
+
+// Reverse populate with virtuals
+UserSchema.virtual('stays', {
+  ref: 'Stay',
+  localField: '_id',
+  foreignField: 'createdBy',
+  justOne: false,
+});
 
 module.exports = mongoose.model('User', UserSchema);
