@@ -1,5 +1,4 @@
 const { StatusCodes } = require('http-status-codes');
-const bcrypt = require('bcryptjs');
 
 const User = require('../models/User');
 const CustomError = require('../errors');
@@ -13,7 +12,7 @@ const {
 // @route /api/users
 // @access Private and Admin Only
 exports.getAllUsers = async (req, res) => {
-  const users = await User.find({}).select('-password');
+  const users = await User.find({}).populate('stays').select('-password');
 
   res.status(StatusCodes.OK).json({ count: users.length, users });
 };
@@ -40,13 +39,17 @@ exports.getAllGuests = async (req, res) => {
 // @route /api/users/partners
 // @access Private and Admin Only
 exports.getAllPartners = async (req, res) => {
-  const users = await User.find({ role: 'partner' }).select('-password');
+  const users = await User.find({ role: 'partner' })
+    .populate('stays')
+    .select('-password');
 
   res.status(StatusCodes.OK).json({ count: users.length, users });
 };
 
 exports.getSingleUser = async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id }).select('-password');
+  const user = await User.findOne({ _id: req.params.id })
+    .populate('stays')
+    .select('-password');
 
   if (!user) {
     throw new CustomError.NotFoundError(`No user with id ${req.params.id}`);
@@ -144,4 +147,18 @@ exports.updateUserPassword = async (req, res) => {
   res
     .status(StatusCodes.OK)
     .json({ msg: 'Success! Password Updated Successfully' });
+};
+
+exports.deleteUser = async (req, res) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    throw new CustomError.NotFoundError(
+      `No user found with id ${req.params.id}`
+    );
+  }
+
+  user.remove();
+
+  res.status(StatusCodes.OK).json({ msg: 'user removed' });
 };
