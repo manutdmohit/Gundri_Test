@@ -17,15 +17,15 @@ const userRouter = require('./routes/userRoutes');
 const stayRouter = require('./routes/stayRoutes');
 const roomRouter = require('./routes/roomRoutes');
 
-const hotelRoutes = require('./routes/hotelRoutes');
+// const hotelRoutes = require('./routes/hotelRoutes');
 
-const adminRoutes = require('./routes/adminRoutes');
-const partnerRoutes = require('./routes/partnerRoutes');
-const customerRoutes = require('./routes/customerRoutes');
-const guestCustomerRoutes = require('./routes/guestCustomerRoutes');
+// const adminRoutes = require('./routes/adminRoutes');
+// const partnerRoutes = require('./routes/partnerRoutes');
+// const customerRoutes = require('./routes/customerRoutes');
+// const guestCustomerRoutes = require('./routes/guestCustomerRoutes');
 
 // User Routes
-const userRoutes = require('./routes/UserRoutes/user');
+// const userRoutes = require('./routes/UserRoutes/user');
 
 // Stay Routes
 
@@ -69,13 +69,13 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/stays', stayRouter);
 app.use('/api/v1/rooms', roomRouter);
 
-app.use('/api/v1/hotels', hotelRoutes);
+// app.use('/api/v1/hotels', hotelRoutes);
 
-// Account Routes
-app.use('/api/v1/admins', adminRoutes);
-app.use('/api/v1/partners', partnerRoutes);
-app.use('/api/v1/customers', customerRoutes);
-app.use('/api/v1/guestcustomers', guestCustomerRoutes);
+// // Account Routes
+// app.use('/api/v1/admins', adminRoutes);
+// app.use('/api/v1/partners', partnerRoutes);
+// app.use('/api/v1/customers', customerRoutes);
+// app.use('/api/v1/guestcustomers', guestCustomerRoutes);
 
 // // User Routes
 // app.use('/api/v1', userRoutes);
