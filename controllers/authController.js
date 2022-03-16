@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 
 const User = require('../models/User');
-const Partner = require('../models/Accounts/Partner');
+
 const CustomError = require('../errors');
 
 const { attachCookiesToResponse, createTokenUser } = require('../utils');
@@ -37,9 +37,9 @@ const register = async (req, res) => {
   // Generating Token
   const tokenUser = createTokenUser(user);
 
-  attachCookiesToResponse({ res, user: tokenUser });
+  const token = attachCookiesToResponse({ res, user: tokenUser });
 
-  res.status(StatusCodes.CREATED).json({ user: tokenUser });
+  res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
 };
 
 const login = async (req, res) => {
@@ -64,9 +64,61 @@ const login = async (req, res) => {
   // Generating Token
   const tokenUser = createTokenUser(user);
 
-  attachCookiesToResponse({ res, user: tokenUser });
+  const token = attachCookiesToResponse({ res, user: tokenUser });
 
-  res.status(StatusCodes.OK).json({ user: tokenUser });
+  res.status(StatusCodes.OK).json({ user: tokenUser, token });
+};
+
+const registerPartner = async (req, res) => {
+  const role = 'partner';
+  const verified = false;
+
+  const {
+    firstName,
+    lastName,
+    email,
+    mobileNumber,
+    city,
+    state,
+    address1,
+    address2,
+    country,
+    centralName,
+  } = req.body;
+
+  // Check whether the email is already present in the database or not
+  const checkEmail = await User.findOne({ email });
+  if (checkEmail) {
+    throw new CustomError.BadRequestError(
+      'Email already exists. Try with another email.'
+    );
+  }
+
+  if (!address1 || !address2 || !city || !state || !country || !centralName) {
+    throw new CustomError.BadRequestError('Please enter all values');
+  }
+
+  const user = await User.create({
+    firstName,
+    lastName,
+    mobileNumber,
+    email,
+    role,
+    verified,
+    country,
+    address1,
+    address2,
+    state,
+    city,
+    centralName,
+  });
+
+  // Generating Token
+  const tokenUser = createTokenUser(user);
+
+  const token = attachCookiesToResponse({ res, user: tokenUser, token });
+
+  res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 
 const loginPartner = async (req, res) => {
@@ -97,9 +149,9 @@ const loginPartner = async (req, res) => {
   // Generating Token
   const tokenUser = createTokenUser(user);
 
-  attachCookiesToResponse({ res, user: tokenUser });
+  const token = attachCookiesToResponse({ res, user: tokenUser });
 
-  res.status(StatusCodes.OK).json({ user: tokenUser });
+  res.status(StatusCodes.OK).json({ user: tokenUser, token });
 };
 
 const logout = async (req, res) => {
@@ -154,61 +206,9 @@ const registerGuest = async (req, res) => {
   // Generating Token
   const tokenUser = createTokenUser(user);
 
-  attachCookiesToResponse({ res, user: tokenUser });
+  const token = attachCookiesToResponse({ res, user: tokenUser });
 
-  res.status(StatusCodes.CREATED).json({ user: tokenUser });
-};
-
-const registerPartner = async (req, res) => {
-  const role = 'partner';
-  const verified = false;
-
-  const {
-    firstName,
-    lastName,
-    email,
-    mobileNumber,
-    city,
-    state,
-    address1,
-    address2,
-    country,
-    centralName,
-  } = req.body;
-
-  // Check whether the email is already present in the database or not
-  const checkEmail = await User.findOne({ email });
-  if (checkEmail) {
-    throw new CustomError.BadRequestError(
-      'Email already exists. Try with another email.'
-    );
-  }
-
-  if (!address1 || !address2 || !city || !state || !country || !centralName) {
-    throw new CustomError.BadRequestError('Please enter all values');
-  }
-
-  const user = await User.create({
-    firstName,
-    lastName,
-    mobileNumber,
-    email,
-    role,
-    verified,
-    country,
-    address1,
-    address2,
-    state,
-    city,
-    centralName,
-  });
-
-  // Generating Token
-  const tokenUser = createTokenUser(user);
-
-  attachCookiesToResponse({ res, user: tokenUser });
-
-  res.status(StatusCodes.CREATED).json({ user: tokenUser });
+  res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
 };
 
 module.exports = {
