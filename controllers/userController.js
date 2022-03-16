@@ -78,7 +78,11 @@ exports.updateUser = async (req, res) => {
 
   const user = await User.findById(req.params.id);
 
-  checkPermissions(req.user, user._id);
+  if (!user) {
+    throw new CustomError.NotFoundError(
+      `No user found with id ${req.params.id}`
+    );
+  }
 
   user.firstName = firstName;
   user.lastName = lastName;
@@ -89,9 +93,11 @@ exports.updateUser = async (req, res) => {
 
   const tokenUser = createTokenUser(user);
 
-  attachCookiesToResponse({ res, user: tokenUser });
+  const token = attachCookiesToResponse({ res, user: tokenUser });
 
-  res.status(StatusCodes.OK).json({ user: tokenUser });
+  checkPermissions(req.user, user._id);
+
+  res.status(StatusCodes.OK).json({ user: tokenUser, token });
 };
 
 // Update partner with findOne and save
