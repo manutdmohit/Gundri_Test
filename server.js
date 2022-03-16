@@ -14,6 +14,8 @@ const app = express();
 // Routes
 const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
+const stayRouter = require('./routes/stayRoutes');
+const roomRouter = require('./routes/roomRoutes');
 
 const hotelRoutes = require('./routes/hotelRoutes');
 
@@ -21,8 +23,6 @@ const adminRoutes = require('./routes/adminRoutes');
 const partnerRoutes = require('./routes/partnerRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const guestCustomerRoutes = require('./routes/guestCustomerRoutes');
-const stayRoutes = require('./routes/stayRoutes');
-const roomRoutes = require('./routes/roomRoutes');
 
 // User Routes
 const userRoutes = require('./routes/UserRoutes/user');
@@ -66,8 +66,8 @@ app.get('/api/v1', (req, res) => {
 // Mount the routers
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/stays', stayRoutes);
-app.use('/api/v1/rooms', roomRoutes);
+app.use('/api/v1/stays', stayRouter);
+app.use('/api/v1/rooms', roomRouter);
 
 app.use('/api/v1/hotels', hotelRoutes);
 
@@ -77,14 +77,14 @@ app.use('/api/v1/partners', partnerRoutes);
 app.use('/api/v1/customers', customerRoutes);
 app.use('/api/v1/guestcustomers', guestCustomerRoutes);
 
-// User Routes
-app.use('/api/v1', userRoutes);
+// // User Routes
+// app.use('/api/v1', userRoutes);
 
-// Stay Routes
-app.use('/api/v1/stays', stayRoutes);
+// // Stay Routes
+// app.use('/api/v1/stays', stayRoutes);
 
-// Room Routes
-app.use('/api/v1/rooms', roomRoutes);
+// // Room Routes
+// app.use('/api/v1/rooms', roomRoutes);
 
 // Middlewares
 app.use(notFoundMiddleware);
