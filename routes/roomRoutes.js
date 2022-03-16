@@ -10,17 +10,14 @@ const {
   deleteRoom,
 } = require('../controllers/roomController');
 
-const {
-  authenticateUser,
-  authorizePermissions,
-} = require('../middleware/authentication');
+const { authenticateUser, authorizeRoles } = require('../middleware/full-auth');
 
 router.get('/', getAllRooms);
 
 router.post(
   '/create',
   authenticateUser,
-  authorizePermissions('admin', 'partner'),
+  authorizeRoles('admin', 'partner'),
   createRoom
 );
 
@@ -28,14 +25,10 @@ router.route('/:id').get(getSingleRoom);
 
 router
   .route('/update/:id')
-  .patch(
-    authenticateUser,
-    authorizePermissions('admin', 'partner'),
-    updateRoom
-  );
+  .patch(authenticateUser, authorizeRoles('admin', 'partner'), updateRoom);
 
 router
   .route('/delete/:id')
-  .delete(authenticateUser, authorizePermissions('admin'), deleteRoom);
+  .delete(authenticateUser, authorizeRoles('admin'), deleteRoom);
 
 module.exports = router;
