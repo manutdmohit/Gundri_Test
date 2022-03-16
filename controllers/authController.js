@@ -154,15 +154,6 @@ const loginPartner = async (req, res) => {
   res.status(StatusCodes.OK).json({ user: tokenUser, token });
 };
 
-const logout = async (req, res) => {
-  res.cookie('token', '', {
-    httpOnly: true,
-    expires: new Date(Date.now()),
-  });
-
-  res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
-};
-
 const registerGuest = async (req, res) => {
   const role = 'guest';
 
@@ -211,11 +202,20 @@ const registerGuest = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
 };
 
+const logout = async (req, res) => {
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+
+  res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
+};
+
 module.exports = {
   register,
   login,
   loginPartner,
-  logout,
   registerGuest,
   registerPartner,
+  logout,
 };
