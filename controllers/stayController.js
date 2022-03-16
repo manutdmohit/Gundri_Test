@@ -61,7 +61,9 @@ exports.updateStay = async (req, res) => {
   });
 
   if (!stay) {
-    throw new CustomError.NotFoundError('No stay found');
+    throw new CustomError.NotFoundError(
+      'No stay found with id ${req.params.id}'
+    );
   }
 
   checkPermissions(req.user, stay.createdBy);
