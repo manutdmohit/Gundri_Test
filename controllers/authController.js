@@ -202,7 +202,7 @@ const registerGuest = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
 };
 
-const logot = async (req, res) => {
+const logout = async (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
     expires: new Date(Date.now()),
