@@ -16,6 +16,7 @@ const authRouter = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
 const stayRouter = require('./routes/stayRoutes');
 const roomRouter = require('./routes/roomRoutes');
+const bookingRouter = require('./routes/bookingRoutes');
 
 // const hotelRoutes = require('./routes/hotelRoutes');
 
@@ -68,6 +69,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/stays', stayRouter);
 app.use('/api/v1/rooms', roomRouter);
+app.use('/api/v1/bookings', bookingRouter);
 
 // app.use('/api/v1/hotels', hotelRoutes);
 
