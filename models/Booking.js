@@ -2,27 +2,54 @@ const mongoose = require('mongoose');
 
 const BookingSchema = new mongoose.Schema(
   {
-    room_types: {
-      type: String,
+    stay: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Stay',
+      required: true,
     },
-    adults: {
-      type: Number,
-    },
-    childrens: {
-      type: Number,
+    room_type: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Room',
+      required: true,
     },
     price: {
       type: Number,
+      required: true,
     },
-    description: {
-      type: String,
+    totalRooms: {
+      type: Number,
+      required: true,
     },
-    amenities: {
-      type: [String],
+    totalPrice: {
+      type: Number,
+      default: 0,
     },
     bookedBy: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
+      required: true,
+    },
+    checkIn: {
+      type: Date,
+    },
+    checkOut: {
+      type: Date,
+    },
+    paymentType: {
+      type: String,
+      enum: {
+        values: ['Pay on Arrival', 'Pay Later'],
+        message: '{VALUE} is not supported',
+      },
+      default: 'Pay on Arrival',
+    },
+    bookingDate: {
+      type: Date,
+      default: Date.now(),
+    },
+    bookingDueDate: {
+      type: Date,
+      default: Date.now() + 1000 * 60 * 60 * 24,
     },
   },
   {
