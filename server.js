@@ -17,6 +17,7 @@ const userRouter = require('./routes/userRoutes');
 const stayRouter = require('./routes/stayRoutes');
 const roomRouter = require('./routes/roomRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const invoiceRouter = require('./routes/invoiceRoutes');
 
 // const hotelRoutes = require('./routes/hotelRoutes');
 
@@ -52,24 +53,13 @@ app.use(express.json());
 // Parsing the signed cookie
 app.use(cookieParser(process.env.JWT_SECRET));
 
-app.get('/', (req, res) => {
-  res.send('Hello, Ecommerce');
-});
-
-app.get('/api/v1', (req, res) => {
-  // accessing cookie
-
-  // accessing signed cookie
-  console.log(req.signedCookies);
-  res.send('Hello, Gundri');
-});
-
 // Mount the routers
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/stays', stayRouter);
 app.use('/api/v1/rooms', roomRouter);
 app.use('/api/v1/bookings', bookingRouter);
+app.use('/api/v1/invoice', invoiceRouter);
 
 // app.use('/api/v1/hotels', hotelRoutes);
 
