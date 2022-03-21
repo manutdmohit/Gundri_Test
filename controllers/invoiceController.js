@@ -15,14 +15,16 @@ const createInvoice = async (req, res) => {
 
   const room = await Room.findOne({ _id: booking.room_type });
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({
-      bookingNumber: booking.id,
-      firstName: user.firstName,
-      address: user.address,
-      mobileNumber: user.mobileNumber,
-    });
+  console.log(room);
+
+  res.status(StatusCodes.CREATED).json({
+    bookingNumber: booking.id,
+    firstName: user.firstName,
+    address: user.address,
+    mobileNumber: user.mobileNumber,
+    roomType: room.room_type,
+    price: booking.price,
+  });
 };
 
 module.exports = createInvoice;
