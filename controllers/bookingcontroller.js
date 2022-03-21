@@ -44,7 +44,7 @@ const getAllBookings = async (req, res) => {
       select: 'firstName lastName address',
     })
     .populate('stay')
-    .populate('room_type');
+    .populate('room_type ');
 
   res.status(StatusCodes.CREATED).json({ bookings });
 };
