@@ -7,20 +7,39 @@ const InvoiceSchema = new mongoose.Schema(
       ref: 'Booking',
       required: true,
     },
-    user: {
-      type: mongoose.Types.ObjectId,
-      ref: 'User',
+    firstName: {
+      type: String,
       required: true,
     },
-    room: {
-      type: mongoose.Types.ObjectId,
-      ref: 'Room',
-      required: true,
+    address: {
+      type: String,
+    },
+    mobileNumber: {
+      type: Number,
+      required: [true, 'Please provide mobile number'],
+    },
+    stayStars: {
+      type: Number,
+    },
+    stayName: {
+      type: String,
+    },
+    stayLocation: {
+      type: String,
+    },
+    roomType: {
+      type: [Object],
+      required: [true, 'Please provide type of the room'],
+    },
+    totalAmount: {
+      type: Number,
+      required: [true, 'Please provide price of the room'],
     },
   },
+
   {
     timestamps: true,
   }
 );
 
-module.exports = InvoiceSchema;
+module.exports = mongoose.model('invoice', InvoiceSchema);
