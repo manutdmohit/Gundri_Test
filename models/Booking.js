@@ -8,16 +8,15 @@ const BookingSchema = new mongoose.Schema(
       required: true,
     },
     room_type: {
-      type: mongoose.Types.ObjectId,
+      type: [mongoose.Types.ObjectId],
       ref: 'Room',
       required: true,
     },
-    price: {
-      type: Number,
-      required: true,
+    rooms: {
+      type: [Object],
     },
     totalRooms: {
-      type: Number,
+      type: [Number],
       required: true,
     },
     totalPrice: {
@@ -50,6 +49,10 @@ const BookingSchema = new mongoose.Schema(
     bookingDueDate: {
       type: Date,
       default: Date.now() + 1000 * 60 * 60 * 24,
+    },
+    invoice: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Invoice',
     },
   },
   {
