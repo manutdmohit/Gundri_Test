@@ -66,65 +66,12 @@ const createBooking = async (req, res) => {
   });
 
   res.status(StatusCodes.OK).json(booking);
-
-  // if (totalRooms > room.quantity) {
-  //   throw new CustomError.BadRequestError(
-  //     'Please check the number of rooms available'
-  //   );
-  // }
-
-  // let totalPrice;
-  // totalPrice = room.price * totalRooms;
-  // // console.log(totalPrice);
-
-  // if (!room_type) {
-  //   throw new CustomError.BadRequestError('Please provide room type');
-  // }
-
-  // if (!stays.includes(stay) || !rooms.includes(room_type[i])) {
-  //   throw new CustomError.BadRequestError('Stay or Room not found');
-  // }
-
-  // const booking = await Booking.create({
-  //   ...req.body,
-  //   room_type,
-  //   totalPrice,
-  //   bookedBy: req.user.userId,
-  //   stay,
-  // });
-
-  // res.status(StatusCodes.OK).json(booking);
-
-  // const room = await Room.findOne({ _id: room_type[i] });
-
-  // if (totalRooms > room.quantity) {
-  //   throw new CustomError.BadRequestError(
-  //     'Please check the number of rooms available'
-  //   );
-  // }
-
-  // let totalPrice;
-  // totalPrice = room.price * totalRooms;
-
-  // if (!room_type) {
-  //   throw new CustomError.BadRequestError('Please provide room type');
-  // }
-
-  // let stays = await Stay.find({});
-  // stays = stays.map((stay) => stay.id);
-
-  // let rooms = await Room.find({});
-  // rooms = rooms.map((room) => room.id);
-
-  // if (!stays.includes(stay) || !rooms.includes(room_type)) {
-  //   throw new CustomError.BadRequestError('Stay or Room not found');
-  // }
 };
 
 const getAllBookings = async (req, res) => {
   const bookings = await Booking.find({});
 
-  res.status(StatusCodes.CREATED).json({ bookings });
+  res.status(StatusCodes.OK).json({ count: bookings.count, bookings });
 };
 
 const getAllBookingsByLoggedInUser = async (req, res) => {
@@ -132,7 +79,7 @@ const getAllBookingsByLoggedInUser = async (req, res) => {
     'stay'
   );
 
-  res.status(StatusCodes.CREATED).json({ count: bookings.length, bookings });
+  res.status(StatusCodes.OK).json({ count: bookings.length, bookings });
 };
 
 const getSingleBooking = async (req, res) => {
