@@ -13,23 +13,28 @@ const {
   deleteUser,
 } = require('../controllers/userController');
 
-const { authenticateUser, authorizeRoles } = require('../middleware/full-auth');
+const {
+  authenticateUser,
+  authorizePermissions,
+} = require('../middleware/authentication');
 
 const router = express.Router();
 
-router.route('/').get(authenticateUser, authorizeRoles('admin'), getAllUsers);
+router
+  .route('/')
+  .get(authenticateUser, authorizePermissions('admin'), getAllUsers);
 
 router
   .route('/customers')
-  .get(authenticateUser, authorizeRoles('admin'), getAllCustomers);
+  .get(authenticateUser, authorizePermissions('admin'), getAllCustomers);
 
 router
   .route('/guests')
-  .get(authenticateUser, authorizeRoles('admin'), getAllGuests);
+  .get(authenticateUser, authorizePermissions('admin'), getAllGuests);
 
 router
   .route('/partners')
-  .get(authenticateUser, authorizeRoles('admin'), getAllPartners);
+  .get(authenticateUser, authorizePermissions('admin'), getAllPartners);
 
 router.route('/showme').get(authenticateUser, showCurrentLoggedInUser);
 
@@ -43,7 +48,7 @@ router
 
 router
   .route('/delete/:id')
-  .delete(authenticateUser, authorizeRoles('admin'), deleteUser);
+  .delete(authenticateUser, authorizePermissions('admin'), deleteUser);
 
 router.route('/:id').get(authenticateUser, getSingleUser);
 

@@ -7,21 +7,24 @@ const {
   deleteBooking,
   updateBooking,
 } = require('../controllers/bookingcontroller');
-const { authenticateUser, authorizeRoles } = require('../middleware/full-auth');
+const {
+  authenticateUser,
+  authorizePermissions,
+} = require('../middleware/authentication');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(authenticateUser, authorizeRoles('admin'), getAllBookings)
+  .get(authenticateUser, authorizePermissions('admin'), getAllBookings)
   .post(authenticateUser, createBooking);
 
 router.route('/users').get(authenticateUser, getAllBookingsByLoggedInUser);
 
 router
   .route('/:id')
-  .get(authenticateUser, authorizeRoles('admin'), getSingleBooking)
-  .patch(authenticateUser, authorizeRoles('admin'), updateBooking)
-  .delete(authenticateUser, authorizeRoles('admin'), deleteBooking);
+  .get(authenticateUser, authorizePermissions('admin'), getSingleBooking)
+  .patch(authenticateUser, authorizePermissions('admin'), updateBooking)
+  .delete(authenticateUser, authorizePermissions('admin'), deleteBooking);
 
 module.exports = router;

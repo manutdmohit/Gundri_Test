@@ -10,14 +10,17 @@ const {
   deleteStay,
 } = require('../controllers/stayController');
 
-const { authenticateUser, authorizeRoles } = require('../middleware/full-auth');
+const {
+  authenticateUser,
+  authorizePermissions,
+} = require('../middleware/authentication');
 
 router.get('/', getStays);
 
 router.post(
   '/create',
   authenticateUser,
-  authorizeRoles('admin', 'partner'),
+  authorizePermissions('admin', 'partner'),
   createStay
 );
 
@@ -25,10 +28,18 @@ router.get('/:id', getSingleStay);
 
 router
   .route('/:id/update')
-  .patch(authenticateUser, authorizeRoles('admin', 'partner'), updateStay);
+  .patch(
+    authenticateUser,
+    authorizePermissions('admin', 'partner'),
+    updateStay
+  );
 
 router
   .route('/:id/delete')
-  .delete(authenticateUser, authorizeRoles('admin', 'partner'), deleteStay);
+  .delete(
+    authenticateUser,
+    authorizePermissions('admin', 'partner'),
+    deleteStay
+  );
 
 module.exports = router;
