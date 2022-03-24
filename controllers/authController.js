@@ -7,7 +7,11 @@ const CustomError = require('../errors');
 const { attachCookiesToResponse, createTokenUser } = require('../utils');
 
 const register = async (req, res) => {
-  const { firstName, lastName, mobileNumber, email, password } = req.body;
+  const { fullName, phone, email, password } = req.body;
+
+  if (!fullName) {
+    throw CustomError.BadRequestError('Please provide ');
+  }
 
   // Check whether the email is already present in the database or not
   const checkEmail = await User.findOne({ email });
@@ -26,9 +30,8 @@ const register = async (req, res) => {
   const role = isFirstAccount ? 'admin' : 'customer';
 
   const user = await User.create({
-    firstName,
-    lastName,
-    mobileNumber,
+    fullName,
+    phone,
     email,
     password,
     role,
@@ -157,15 +160,7 @@ const loginPartner = async (req, res) => {
 const registerGuest = async (req, res) => {
   const role = 'guest';
 
-  const {
-    firstName,
-    lastName,
-    email,
-    password,
-    mobileNumber,
-    address,
-    country,
-  } = req.body;
+  const { firstName, lastName, email, phone, address } = req.body;
 
   // Check whether the email is already present in the database or not
   const checkEmail = await User.findOne({ email });
@@ -186,9 +181,8 @@ const registerGuest = async (req, res) => {
   const user = await User.create({
     firstName,
     lastName,
-    mobileNumber,
+    phone,
     email,
-    password,
     role,
     country,
     address,
