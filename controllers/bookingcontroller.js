@@ -7,6 +7,8 @@ const Room = require('../models/Room');
 
 const CustomError = require('../errors');
 
+const { checkPermissions } = require('../utils');
+
 const createBooking = async (req, res) => {
   const user = await User.findOne({ _id: req.user.userId });
 
@@ -97,6 +99,12 @@ const getAllBookingsByLoggedInUser = async (req, res) => {
 
 const getSingleBooking = async (req, res) => {
   const booking = await Booking.findOne({ _id: req.params.id });
+
+  const user = await User.findOne({ _id: booking.bookedBy }).select(
+    '-password'
+  );
+
+  checkPermissions(req.user, user._id);
 
   if (!booking) {
     throw new CustomError.NotFoundError(
