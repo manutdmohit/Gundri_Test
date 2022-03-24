@@ -7,7 +7,7 @@ const BookingSchema = new mongoose.Schema(
       ref: 'Stay',
       required: true,
     },
-    room_type: {
+    roomType: {
       type: [mongoose.Types.ObjectId],
       ref: 'Room',
       required: true,
@@ -19,20 +19,13 @@ const BookingSchema = new mongoose.Schema(
       type: [Number],
       required: true,
     },
-    totalPrice: {
+    totalAmount: {
       type: Number,
-      default: 0,
     },
     bookedBy: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
       required: true,
-    },
-    checkIn: {
-      type: Date,
-    },
-    checkOut: {
-      type: Date,
     },
     paymentType: {
       type: String,
@@ -42,12 +35,14 @@ const BookingSchema = new mongoose.Schema(
       },
       default: 'Pay on Arrival',
     },
-    bookingDate: {
+    checkIn: {
       type: Date,
+      required: true,
       default: Date.now(),
     },
-    bookingDueDate: {
+    CheckOut: {
       type: Date,
+      required: true,
       default: Date.now() + 1000 * 60 * 60 * 24,
     },
     invoice: {
@@ -59,5 +54,12 @@ const BookingSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Cascade delete invoices when a booking is deleted
+BookingSchema.pre('remove', async function (next) {
+  console.log(`Courses being removed from bootcamp ${this._id}`);
+  await this.model('invoice').deleteMany({ bookingNumber: this._id });
+  next();
+});
 
 module.exports = mongoose.model('Booking', BookingSchema);
