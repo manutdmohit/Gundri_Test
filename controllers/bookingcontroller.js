@@ -10,9 +10,9 @@ const CustomError = require('../errors');
 const createBooking = async (req, res) => {
   const user = await User.findOne({ _id: req.user.userId });
 
-  let { stay, room_type, totalRooms } = req.body;
+  let { stay, roomType, totalRooms } = req.body;
 
-  // console.log(room_type);
+  // console.log(roomType);
 
   let stays = await Stay.find({});
   stays = stays.map((stay) => stay.id);
@@ -23,9 +23,9 @@ const createBooking = async (req, res) => {
   rooms = rooms.map((room) => room.id);
 
   let values = [];
-  for (i = 0; i < room_type.length && totalRooms.length; i++) {
-    let room = await Room.findOne({ _id: room_type[i] });
-    if (!stays.includes(stay) || !rooms.includes(room_type[i])) {
+  for (i = 0; i < roomType.length && totalRooms.length; i++) {
+    let room = await Room.findOne({ _id: roomType[i] });
+    if (!stays.includes(stay) || !rooms.includes(roomType[i])) {
       throw new CustomError.BadRequestError('Stay or Room not found');
     }
     values.push({ room, totalRooms: totalRooms[i] });
@@ -46,7 +46,7 @@ const createBooking = async (req, res) => {
     let totalPrice;
     totalPrice = price * totalRooms;
 
-    if (!room_type) {
+    if (!roomType) {
       throw new CustomError.BadRequestError('Please provide room type');
     }
 
@@ -58,9 +58,22 @@ const createBooking = async (req, res) => {
     };
   });
 
+  // console.log(data);
+
+  let totalAmount;
+
+  if (data.length > 1) {
+    totalAmount = data.reduce((prev, curr) =>
+      Number(prev.totalPrice + curr.totalPrice, 0)
+    );
+  } else {
+    totalAmount = data[0].totalPrice;
+  }
+
   const booking = await Booking.create({
     ...req.body,
     rooms: data,
+    totalAmount,
     bookedBy: req.user.userId,
     stay,
   });
