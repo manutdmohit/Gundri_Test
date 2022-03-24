@@ -6,9 +6,8 @@ const createTokenUser = (user) => {
       email: user.email,
       role: user.role,
       userId: user._id,
-      mobileNumber: user.mobileNumber,
+      phone: user.phone,
       address: user.address,
-      country: user.country,
     };
   }
   if (user.role === 'partner') {
@@ -19,7 +18,7 @@ const createTokenUser = (user) => {
       email: user.email,
       role: user.role,
       userId: user._id,
-      mobileNumber: user.mobileNumber,
+      phone: user.mobileNumber,
       address1: user.address1,
       address2: user.address2,
       state: user.state,
@@ -28,12 +27,11 @@ const createTokenUser = (user) => {
     };
   } else {
     return {
-      firstName: user.firstName,
-      lastName: user.lastName,
+      fullName: user.fullName,
       email: user.email,
       role: user.role,
       userId: user._id,
-      mobileNumber: user.mobileNumber,
+      phone: user.phone,
     };
   }
 };
