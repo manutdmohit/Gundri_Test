@@ -23,7 +23,7 @@ router.route('/users').get(authenticateUser, getAllBookingsByLoggedInUser);
 
 router
   .route('/:id')
-  .get(authenticateUser, authorizePermissions('admin'), getSingleBooking)
+  .get(authenticateUser, getSingleBooking)
   .patch(authenticateUser, authorizePermissions('admin'), updateBooking)
   .delete(authenticateUser, authorizePermissions('admin'), deleteBooking);
 
