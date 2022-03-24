@@ -27,7 +27,7 @@ router.post(
 router.get('/:id', getSingleStay);
 
 router
-  .route('/:id/update')
+  .route('/:id')
   .patch(
     authenticateUser,
     authorizePermissions('admin', 'partner'),
@@ -35,7 +35,7 @@ router
   );
 
 router
-  .route('/:id/delete')
+  .route('/:id')
   .delete(
     authenticateUser,
     authorizePermissions('admin', 'partner'),
